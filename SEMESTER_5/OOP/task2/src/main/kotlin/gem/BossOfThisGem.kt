@@ -5,4 +5,5 @@ class BossOfThisGem(
 ) {
     fun sort() = gems.sort()
     override fun toString() = gems.toString()
+    public fun gems() = gems
 }
