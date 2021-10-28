@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Gems>
+    <gem id="1">
+        <name>Rubin</name>
+        <value>3.14</value>
+        <original>Drogobych</original>
+        <Preciousness>precious</Preciousness>
+        <VisualParameters>
+            <color>red</color>
+            <opacity>90</opacity>
+        </VisualParameters>
+    </gem>
+
+    <Gem id="2">
+        <name>Karat</name>
+        <value>42</value>
+        <original>Truskavetc</original>
+        <Preciousness>semi-precious</Preciousness>
+        <VisualParameters>
+            <color>green</color>
+            <opacity>10</opacity>
+        </VisualParameters>
+    </Gem>
+
+    <gem id="3">
+        <name>i7</name>
+        <value>7</value>
+        <original>Intel</original>
+        <Preciousness>semi-precious</Preciousness>
+        <VisualParameters>
+            <color>yellow</color>
+            <opacity>0</opacity>
+        </VisualParameters>
+    </gem>
+</Gems>
