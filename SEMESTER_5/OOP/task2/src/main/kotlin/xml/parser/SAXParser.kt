@@ -7,10 +7,7 @@ import java.io.File
 import javax.xml.parsers.SAXParserFactory
 import kotlin.text.StringBuilder
 
-class SAXParser<T>(
-    private var handler: XMLHandler<T>
-): XMLParser<T> {
-
+class SAXParser<T>(handler: XMLHandler<T>) : XMLParser<T>(handler) {
     override fun parse(xmlPath: String) {
         val saxFactory = SAXParserFactory.newInstance()
         val saxParser = saxFactory.newSAXParser()

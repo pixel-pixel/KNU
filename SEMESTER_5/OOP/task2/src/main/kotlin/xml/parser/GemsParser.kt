@@ -16,6 +16,7 @@ class GemsParser {
         val result: List<Gem>
 
         parser = when (parserType.uppercase()) {
+            "DOM" -> DOMParser(handler)
             "SAX" -> SAXParser(handler)
             else -> StAXParser(handler)
         }

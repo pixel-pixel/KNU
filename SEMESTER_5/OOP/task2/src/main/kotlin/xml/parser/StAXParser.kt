@@ -9,10 +9,7 @@ import javax.xml.stream.events.EndElement
 import javax.xml.stream.events.StartElement
 import javax.xml.stream.events.XMLEvent
 
-
-class StAXParser<T>(
-    private val handler: XMLHandler<T>
-) : XMLParser<T> {
+class StAXParser<T>(handler: XMLHandler<T>) : XMLParser<T>(handler) {
     override fun parse(xmlPath: String) {
         val factory = XMLInputFactory.newInstance()
         val reader: XMLEventReader = factory.createXMLEventReader(FileInputStream(xmlPath))
@@ -24,9 +21,6 @@ class StAXParser<T>(
             event = reader.nextEvent()
 
             when (event.eventType) {
-                XMLStreamConstants.ATTRIBUTE -> {
-
-                }
                 XMLStreamConstants.START_ELEMENT -> {
                     startElement = event.asStartElement()
                     event = reader.nextEvent()

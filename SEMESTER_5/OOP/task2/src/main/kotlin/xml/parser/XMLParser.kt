@@ -1,5 +1,9 @@
 package xml.parser
 
-fun interface XMLParser<T> {
-    fun parse(xmlPath: String)
+import xml.handler.XMLHandler
+
+abstract class XMLParser<T>(
+    val handler: XMLHandler<T>
+) {
+    abstract fun parse(xmlPath: String)
 }
