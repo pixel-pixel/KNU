@@ -5,7 +5,6 @@ import xml.handler.GemXMLHandler
 import xml.validator.XMLValidator
 import java.lang.Exception
 import java.util.*
-import kotlin.collections.ArrayList
 
 class GemsParser {
     private lateinit var parser: XMLParser<Gem>
@@ -16,10 +15,10 @@ class GemsParser {
         val handler = GemXMLHandler()
         val result: List<Gem>
 
-        when (parserType.uppercase()) {
-            else -> parser = StAXParser(handler)
+        parser = when (parserType.uppercase()) {
+            "SAX" -> SAXParser(handler)
+            else -> StAXParser(handler)
         }
-
         parser.parse(xmlPath)
         result = handler.getElements()
         Collections.sort(result)
