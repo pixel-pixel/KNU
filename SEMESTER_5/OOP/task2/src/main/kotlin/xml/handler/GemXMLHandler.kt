@@ -6,7 +6,7 @@ class GemXMLHandler: XMLHandler<Gem> {
     private var gem = Gem()
     private val gems = ArrayList<Gem>()
     override val name: String
-        get() = "gem"
+        get() = "Gem"
 
     override fun getElements() = gems
     override fun startTag(element: String, value: String) = when(element.lowercase()) {

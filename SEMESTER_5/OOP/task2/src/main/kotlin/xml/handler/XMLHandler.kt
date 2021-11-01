@@ -1,7 +1,5 @@
 package xml.handler
 
-import gem.Gem
-
 interface XMLHandler<T> {
     val name: String
     fun getElements(): List<T>

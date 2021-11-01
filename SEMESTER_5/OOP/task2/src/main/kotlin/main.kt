@@ -2,7 +2,7 @@ import gem.*
 import xml.parser.GemsParser
 
 fun main() {
-    var parser = GemsParser()
+    val parser = GemsParser()
     val gems = parser.parse("src/main/res/gems.xml", "src/main/res/gems.xsd", "DOM")
 
     println(gems)
