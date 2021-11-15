@@ -1,10 +1,11 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.io.*;
+import java.util.Vector;
 
 public class SchedulingAlgorithm {
 
-  public static Results Run(int runtime, ArrayList<Process> processArr, Results result) {
+  public static Results Run(int runtime, Vector<Process> processArr, Results result) {
     int comptime = 0;
     int currentProcess = 0;
     int previousProcess = 0;
