@@ -10,7 +10,7 @@ public class PipeManager {
     public static File create(String pipe_name) throws IOException, InterruptedException {
         var pipe_path = PATH + pipe_name;
         var file = new File(pipe_path);
-        if (file.exists()) remove(pipe_name);
+        if (file.exists()) file.delete();
 
         var builder = new ProcessBuilder(MKFIFO, pipe_path);
         var process = builder.inheritIO().start();

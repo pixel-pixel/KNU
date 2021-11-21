@@ -25,18 +25,18 @@ public class Main {
         f_writer.close();
         g_writer.close();
 
-        var line = "";
         var f_reader = PipeManager.reader(F_PIPE_NAME);
         var g_reader = PipeManager.reader(G_PIPE_NAME);
+        var line = "";
         var f_result = 0.;
         var g_result = 0.;
+
         while ((line = f_reader.readLine()) != null) {
             f_result = Double.parseDouble(line);
         }
         while ((line = g_reader.readLine()) != null) {
             g_result = Double.parseDouble(line);
         }
-
 
         PipeManager.remove(F_PIPE_NAME);
         PipeManager.remove(G_PIPE_NAME);
