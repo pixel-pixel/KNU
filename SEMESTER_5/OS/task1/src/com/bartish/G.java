@@ -1,9 +1,13 @@
 package com.bartish;
 
+import os.lab1.compfuncs.basic.IntOps;
+
 import java.io.IOException;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 public class G {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, ExecutionException, InterruptedException {
         log("start work");
 
         var pipe_name = args[0];
@@ -11,17 +15,17 @@ public class G {
         log("create reader");
 
         var line = reader.readLine();
-        var x = Float.parseFloat(line);
+        var x = Integer.parseInt(line);
         log("has X");
 
-        var f_res = x * 2;
+        var res = IntOps.trialG(x).get();
         log("calculate new value");
 
         var writer = PipeManager.writer(pipe_name);
         log("create writer");
 
-        writer.write(f_res+"");
-        writer.flush();
+        writer.write(res+"");
+        writer.close();
         log("send result");
 
         log("has ended work");

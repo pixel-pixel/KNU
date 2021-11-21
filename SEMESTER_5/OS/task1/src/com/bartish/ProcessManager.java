@@ -16,8 +16,8 @@ public final class ProcessManager {
 
     public static Process run(Class klass, String... args) throws IOException {
         var builder = create(klass, args);
-        return builder.start();
-        //builder.inheritIO().start() to watch logs
+//        return builder.start();
+        return builder.inheritIO().start(); // to watch logs
     }
 
     public static ProcessBuilder create(Class klass, String... args) {

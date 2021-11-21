@@ -28,31 +28,31 @@ public class Main {
         var line = "";
         var f_reader = PipeManager.reader(F_PIPE_NAME);
         var g_reader = PipeManager.reader(G_PIPE_NAME);
-        var f_result = 0f;
-        var g_result = 0f;
-
+        var f_result = 0.;
+        var g_result = 0.;
         while ((line = f_reader.readLine()) != null) {
-            f_result = Float.parseFloat(line);
+            f_result = Double.parseDouble(line);
         }
         while ((line = g_reader.readLine()) != null) {
-            g_result = Float.parseFloat(line);
+            g_result = Double.parseDouble(line);
         }
+
 
         PipeManager.remove(F_PIPE_NAME);
         PipeManager.remove(G_PIPE_NAME);
         result(x, f_result, g_result);
     }
 
-    public static float enterX() {
+    public static int enterX() {
         var scanner = new Scanner(System.in);
-        var result = 0f;
+        var result = 0;
         var line = "";
 
         while (true) {
             System.out.print("Enter X: ");
             line = scanner.nextLine();
             try {
-                result = Float.parseFloat(line);
+                result = Integer.parseInt(line);
                 return result;
             } catch (Exception e) {
                 System.out.println("Incorrect number!");
@@ -60,7 +60,7 @@ public class Main {
         }
     }
 
-    public static void result(float x, float f_r, float g_r) {
+    public static void result(double x, double f_r, double g_r) {
         var result = f_r + g_r;
         System.out.println("Input: " + x);
         System.out.println("F result: " + f_r);
