@@ -58,7 +58,7 @@ public class DOMParser<T> extends XMLParser<T> {
     private static String getChildValue(Element element, String name) {
         Element child = (Element) element.getElementsByTagName(name).item(0);
         if (child == null) {
-            return new String();
+            return "";
         }
         Node node = child.getFirstChild();
         return node.getNodeValue();
