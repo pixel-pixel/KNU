@@ -73,7 +73,7 @@ public class Kernel extends Thread {
             for (i = 0; i <= virtPageNum; i++) {
                 high = (block * (i + 1)) - 1;
                 low = block * i;
-                memVector.addElement(new Page(i, -1, R, M, 0, 0, high, low));
+                memVector.addElement(new Page(i, -1, R, M, 0, 0, high, low, false));
             }
             try {
                 DataInputStream in = new DataInputStream(new FileInputStream(f));
@@ -326,7 +326,7 @@ public class Kernel extends Thread {
         controlPanel.instructionValueLabel.setText(instruct.inst);
         controlPanel.addressValueLabel.setText(Long.toString(instruct.addr, addressradix));
         getPage(Virtual2Physical.pageNum(instruct.addr, virtPageNum, block));
-        if (controlPanel.pageFaultValueLabel.getText() == "YES") {
+        if (controlPanel.pageFaultValueLabel.getText().equals("YES")) {
             controlPanel.pageFaultValueLabel.setText("NO");
         }
         if (instruct.inst.startsWith("READ")) {
@@ -384,7 +384,7 @@ public class Kernel extends Thread {
             }
         }
         runs++;
-        controlPanel.timeValueLabel.setText(Integer.toString(runs * 10) + " (ns)");
+        controlPanel.timeValueLabel.setText((runs * 10) + " (ns)");
     }
 
     public void reset() {
