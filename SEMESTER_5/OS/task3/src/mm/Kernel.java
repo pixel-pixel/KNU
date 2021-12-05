@@ -311,7 +311,7 @@ public class Kernel extends Thread {
         step();
         while (runs != runcycles) {
             try {
-                Thread.sleep(2000);
+                Thread.sleep(20);
             } catch (InterruptedException e) {
                 /* Do nothing */
             }
