@@ -54,42 +54,71 @@ public class PageFault {
      *                       simulator, and allows one to modify the current display.
      */
     public static void replacePage(Vector mem, int virtPageNum, int replacePageNum, ControlPanel controlPanel) {
-        int count = 0;
-        int oldestPage = -1;
-        int oldestTime = 0;
-        int firstPage = -1;
-        int map_count = 0;
-        boolean mapped = false;
+        int firstPhysicalNotUsedPage;
+        int physicalOfLastUsedInReplacement = -1;
+        Page pageLastUsedInReplacement;
 
-        while (!(mapped) || count != virtPageNum) {
-            Page page = (Page) mem.elementAt(count);
-            if (page.physical != -1) {
-                if (firstPage == -1) {
-                    firstPage = count;
-                }
-                if (page.inMemTime > oldestTime) {
-                    oldestTime = page.inMemTime;
-                    oldestPage = count;
-                    mapped = true;
-                }
-            }
-            count++;
-            if (count == virtPageNum) {
-                mapped = true;
-            }
+        pageLastUsedInReplacement = findPageLastUsedInReplacement(virtPageNum, mem);
+        if (pageLastUsedInReplacement != null) {
+            physicalOfLastUsedInReplacement = pageLastUsedInReplacement.physical;
         }
-        if (oldestPage == -1) {
-            oldestPage = firstPage;
+
+        firstPhysicalNotUsedPage = findIdOfPageForReplacement(virtPageNum, mem, physicalOfLastUsedInReplacement);
+
+        if (firstPhysicalNotUsedPage == -1) {
+            firstPhysicalNotUsedPage = findOriginallyFirstPhysicalPage(virtPageNum, mem);
         }
-        Page page = (Page) mem.elementAt(oldestPage);
+
+        if (physicalOfLastUsedInReplacement != -1) {
+            pageLastUsedInReplacement.lastUsedInReplacement = false;
+        }
+
+        Page page = (Page) mem.elementAt(firstPhysicalNotUsedPage);
         Page nextpage = (Page) mem.elementAt(replacePageNum);
-        controlPanel.removePhysicalPage(oldestPage);
+        controlPanel.removePhysicalPage(firstPhysicalNotUsedPage);
         nextpage.physical = page.physical;
+        nextpage.lastUsedInReplacement = true;
         controlPanel.addPhysicalPage(nextpage.physical, replacePageNum);
         page.inMemTime = 0;
         page.lastTouchTime = 0;
         page.R = 0;
         page.M = 0;
         page.physical = -1;
+    }
+
+    private static Page findPageLastUsedInReplacement(int virtPageNum, Vector mem) {
+        int count = 0;
+        while (count != virtPageNum) {
+            Page page = (Page) mem.elementAt(count);
+            if (page.physical != -1 && page.lastUsedInReplacement) {
+                return page;
+            }
+            count++;
+        }
+        return null;
+    }
+
+    private static int findIdOfPageForReplacement(int virtPageNum, Vector mem, int physicalOfLastUsedInReplacement) {
+        int count = 0;
+        while (count != virtPageNum) {
+            Page page = (Page) mem.elementAt(count);
+            if (page.physical == physicalOfLastUsedInReplacement + 1) {
+                return count;
+            }
+            count++;
+        }
+        return -1;
+    }
+
+    private static int findOriginallyFirstPhysicalPage(int virtPageNum, Vector mem) {
+        int count = 0;
+        while (count != virtPageNum) {
+            Page page = (Page) mem.elementAt(count);
+            if (page.physical == 0) {
+                return count;
+            }
+            count++;
+        }
+        return -1;
     }
 }
