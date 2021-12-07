@@ -17,7 +17,7 @@ def create_rand_matrix(size)
   (0..size - 1).each do |i|
     (0..size - 1).each do |j|
       if i == j
-        matrix[i][j] = 0
+        matrix[i][j] = 1
       else
         matrix[i][j] = rand 10
       end

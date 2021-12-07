@@ -1,8 +1,5 @@
-Page replacement completed in 0.8072499999999999ms
-Page replacement completed in 0.091708ms
-Page replacement completed in 0.061917ms
-Page replacement completed in 0.06999999999999999ms
-Page replacement completed in 0.118625ms
-Page replacement completed in 0.072667ms
-Total time: 1.222167ms.
-Average time on replacement: 0.2036945ms.
+Page replacement completed in 0.5373749999999999ms
+Page replacement completed in 0.092166ms
+Page replacement completed in 0.108792ms
+Total time: 0.738333ms.
+Average time on replacement: 0.246111ms.
