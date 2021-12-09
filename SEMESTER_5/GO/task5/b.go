@@ -45,7 +45,7 @@ func (b *Barrier) Awaiting() {
 		}
 }
 
-var array [5]int
+var array [4]int
 func run(name int, line [4][10]string, bar *Barrier) {
 		for {
 				rndNum := rand.Intn(10)
@@ -90,7 +90,8 @@ func main() {
 				{"A","A","A","A","B","B","B","C","C","D"},
 				{"A","A","A","B","B","C","C","C","D","D"},
 				{"A","A","B","C","C","C","D","D","D","D"},
-				{"A","B","B","D","B","C","C","D","D","D"}}
+				{"A","B","B","D","B","C","C","D","D","D"},
+		}
 
 		for i := 0; i < parties; i++ {
 				name := i

@@ -92,7 +92,7 @@ func main() {
 		wg := sync.WaitGroup{}
 
 		wg.Add(4)
-		go gardener(garden)
+		 
 		go nature(garden)
 		go monitor1(garden)
 		go monitor2(garden)
