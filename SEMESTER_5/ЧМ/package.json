@@ -5,9 +5,12 @@
   "main": "task1/index.js",
   "scripts": {
     "start:task1": "node task1/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start:task2": "node task2/index.js"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "nodeplotlib": "^0.7.6"
+  }
 }

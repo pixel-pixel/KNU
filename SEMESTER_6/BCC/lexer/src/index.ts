@@ -5,7 +5,7 @@ import { lex } from './lexer';
 import lang from './language'
 
 
-const codePath = path.resolve(__dirname, '../example.js')
+const codePath = path.resolve(__dirname, '../example.mjs')
 const codedata = readFileSync(codePath, 'utf8')
 const tokenArray = lex(codedata, lang)
 
