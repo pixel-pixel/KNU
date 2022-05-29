@@ -1,8 +1,12 @@
-import lang from './language'
-
-export type Language = typeof lang
-
 export type Token = {
-  type: keyof Language | 'ERROR'
+  type: string
   data: string
+}
+
+export type Language = Word[]
+
+type Word = {
+  type: string
+  regexp: string | string[]
+  parseFunc?: (str: string) => { type: string, data: string }
 }
