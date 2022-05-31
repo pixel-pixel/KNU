@@ -5,10 +5,15 @@ import { userStatuses } from './storage/localData'
 import { StartAddressModel } from './models/StartAddress'
 import { EndAddressModel } from './models/EndAddress'
 import { Language, TravelMode } from '@googlemaps/google-maps-services-js'
+import fetch from 'node-fetch'
+import { getTransoprtTime, toMinutes } from './utils'
+import s from './strings'
 
+let statistic = true
+bot.on('/start', msg => bot.sendMessage(msg.chat.id, s.START))
 bot.on('location', controller)
 bot.on('text', controller)
-bot.on(['/start', '/find'], async msg => {
+bot.on('/find', async msg => {
   userStatuses[msg.chat.id] = { status: 'find' }
   const starts = await StartAddressModel.find({ 
     chatId: msg.chat.id
@@ -19,10 +24,62 @@ bot.on(['/start', '/find'], async msg => {
     return acc
   }, [])
 
-  bot.sendMessage(msg.chat.id, 'Send me Your location or address or choose one from list:', {
+  bot.sendMessage(msg.chat.id, s.SEND_YOUR_LOCATION, {
     replyMarkup: bot.keyboard(keyboard, { resize: true, once: true })
   })
-  console.log('start', keyboard);
+})
+
+bot.on('/saved_departures',async msg => {
+  
+  const departures = await StartAddressModel.find({ 
+    chatId: msg.chat.id
+  })
+
+  const departs = departures.map(d => d.address)
+  bot.sendMessage(msg.chat.id, s.YOUR_DEPARTURES + departs.join('\n'))
+})
+
+bot.on('/saved_arrivals',async msg => {
+  
+  const departures = await EndAddressModel.find({ 
+    chatId: msg.chat.id
+  })
+
+  const departs = departures.map(d => d.address)
+  bot.sendMessage(msg.chat.id, s.YOUR_ARRIVALS + departs.join('\n'))
+})
+
+bot.on('/remove_departures',async msg => {
+  
+  await StartAddressModel.remove({ 
+    chatId: msg.chat.id
+  })
+
+  bot.sendMessage(msg.chat.id, s.DEPARTURES_REMOVED)
+})
+
+bot.on('/remove_arrivals',async msg => {
+  
+  const departures = await EndAddressModel.remove({ 
+    chatId: msg.chat.id
+  })
+
+  bot.sendMessage(msg.chat.id, s.ARRIVALS_REMOVED)
+})
+
+bot.on('/enable_statistic', msg => {
+  statistic = true
+  bot.sendMessage(msg.chat.id, s.STATISTIC_ON)
+})
+
+bot.on('/disable_statistic', msg => {
+  statistic = true
+  bot.sendMessage(msg.chat.id, s.STATISTIC_OFF)
+})
+
+bot.on('/help', msg => {
+  statistic = true
+  bot.sendMessage(msg.chat.id, s.HELP)
 })
 
 type Message = { 
@@ -56,7 +113,7 @@ async function start_location(msg: Message) {
     return acc
   }, [])
 
-  bot.sendMessage(msg.chat.id, 'Send me desired location or address or choose one from list:', {
+  bot.sendMessage(msg.chat.id, s.SEND_LOCATION, {
     replyMarkup: bot.keyboard(keyboard, { resize: true, once: true })
   })
 }
@@ -75,13 +132,11 @@ async function finish_location(msg: Message) {
     }
   })
 
-
-
   const route = res?.data?.routes[0]
   const leg = route?.legs[0] as any
   const data = leg?.steps?.find((s: { travel_mode: string }) => s.travel_mode === 'TRANSIT')
 
-  bot.sendMessage(msg.chat.id, 'Best way to get you location:')
+  bot.sendMessage(msg.chat.id, s.BEST_WAY)
 
   if (data) {
     await saveToDb(leg, msg.chat.id)
@@ -114,6 +169,8 @@ async function finish_location(msg: Message) {
           name: arrival_name,
         },
       },
+      route: googleRoute,
+      transport_id
     } = data
 
     const title = `${vehicle.name} ${short_name}: ${name}`
@@ -128,13 +185,36 @@ async function finish_location(msg: Message) {
     Тривалість: ${duration_text}
     `
 
+    try {
+      const checkFunc = async() => {
+        const easyWayData = await fetch(`https://gps.easyway.info/api/route/${googleRoute}/id/${transport_id}`)
+        const { hours, minutes } = (await easyWayData.json()).route.bus.departure
+        const timeToDepartureInMinutes = toMinutes(`${hours}:${minutes}`) as number
+        if (timeToDepartureInMinutes <= 60) {
+          bot.sendMessage(msg.chat.id, s.TRANSPORT_IS_CUMMING)
+          clearInterval(interval)
+        }
+      }
+      await checkFunc()
+      const interval = setInterval(checkFunc, 1000 * 30)
+      
+    } catch {
+      const nowtime = await fetch('https://timeapi.io/api/Time/current/zone?timeZone=Europe/Kiev')
+      const { hour, minute } = await nowtime.json()
+
+      const time = getTransoprtTime(departure_time, `${hour}:${minute}`)
+
+      setTimeout(() => {
+        bot.sendMessage(msg.chat.id, s.TRANSPORT_IS_CUMMING)
+      }, 1000 * 60 * (time - 1))
+    }
+
     const { lat, lng } = data.start_location
     bot.sendVenue(msg.chat.id, [lat, lng], title, departure_name)
     bot.sendMessage(msg.chat.id, text)
   } else {
-    bot.sendMessage(msg.chat.id, 'There no public transport faster than walking')
+    bot.sendMessage(msg.chat.id, s.NO_TRANSPORT)
   }
-
 
   delete userStatuses[msg.chat.id]
 }
@@ -150,6 +230,8 @@ type Step = {
 }
 
 async function saveToDb(leg: Leg, chatId: string) {
+  if (!statistic) return
+
   const { 
     start_address, 
     end_address 
@@ -165,7 +247,7 @@ async function saveToDb(leg: Leg, chatId: string) {
   const endCandidate = await EndAddressModel.findOne({
     address: formatedEndAddress
   })
-  console.log('candidate', JSON.stringify(startCandidate))
+
   if (!startCandidate) {
     await StartAddressModel.create({
       address: formatedStartAddress,
@@ -178,8 +260,6 @@ async function saveToDb(leg: Leg, chatId: string) {
       chatId
     })
   }
-
-  // console.log('leg', JSON.stringify(leg))
 }
 
 function formatAddress(address: string) {

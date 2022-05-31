@@ -7,6 +7,13 @@ exports.bot = void 0;
 require("dotenv/config");
 const telebot_1 = __importDefault(require("telebot"));
 const token = process.env.TELEGRAM_BOT_TOKEN || '';
-const bot = new telebot_1.default(token);
+const bot = new telebot_1.default({
+    token,
+    webhook: {
+        url: 'https://damp-bastion-26170.herokuapp.com',
+        host: '0.0.0.0',
+        port: 443, // Server port.
+    },
+});
 exports.bot = bot;
 bot.start();
