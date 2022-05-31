@@ -9,4 +9,5 @@ type Word = {
   type: string
   regexp: string | string[]
   parseFunc?: (str: string) => { type: string, data: string }
+  finalData?: string
 }

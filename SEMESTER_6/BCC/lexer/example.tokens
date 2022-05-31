@@ -1,84 +1,9 @@
-   1   ONE_LINE_COMMENT
--- A pure virtual class representing any expression
+   1   ERORR
+Unterminated string constant
 
-   2   KEYWORD
-class
+   2   OBJECT_INDETIFIER
+sdfbg
 
-   3   CLASS_INDETIFIER
-Expr
-
-   4   KEYWORD
-inherits
-
-   5   CLASS_INDETIFIER
-IO
-
-   6   PUNCTUATION
-{
-
-   7   ONE_LINE_COMMENT
--- Print this lambda term
-
-   8   OBJECT_INDETIFIER
-print_self
-
-   9   PUNCTUATION
-(
-
-  10   PUNCTUATION
-)
-
-  11   PUNCTUATION
-:
-
-  12   CLASS_INDETIFIER
-SELF_TYPE
-
-  13   PUNCTUATION
-{
-
-  14   PUNCTUATION
-{
-
-  15   OBJECT_INDETIFIER
-out_string
-
-  16   PUNCTUATION
-(
-
-  17   ERROR
-String constant is too long
-
-  18   PUNCTUATION
-)
-
-  19   PUNCTUATION
-;
-
-  20   OBJECT_INDETIFIER
-abort
-
-  21   PUNCTUATION
-(
-
-  22   PUNCTUATION
-)
-
-  23   PUNCTUATION
-;
-
-  24   OBJECT_INDETIFIER
-self
-
-  25   PUNCTUATION
-;
-
-  26   PUNCTUATION
-}
-
-  27   PUNCTUATION
-}
-
-  28   PUNCTUATION
-;
+   3   ERROR
+"
 

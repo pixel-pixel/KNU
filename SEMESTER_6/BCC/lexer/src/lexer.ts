@@ -5,34 +5,36 @@ export function lex(code: string, lang: Language) {
   let line = 1
 
   while (code) {
-    const token = nextToken(code, lang)
+    let token = nextToken(code, lang)
+    const resultToken = token.finalData 
+      ? { ...token, data: token.finalData }
+      : token.parseFunc 
+        ? token.parseFunc(token?.data as string) 
+        : token
 
-    const word = lang.find(w => w.type === token!.type)
-    const resToken = word?.parseFunc ? word.parseFunc(token?.data as string) : token
-    tokenArray.push(resToken!)
+    tokenArray.push(resultToken!)
+    console.log('token', token.data, token.data.length);
+    
     code = code.substring(token!.data.length)    
   }
 
   return tokenArray
 }
 
-function nextToken(code: string, lang: Language, longest = true): Token | null {
+function nextToken(code: string, lang: Language, longest = true) {
   const variants = []
 
-  for (const { type, regexp } of lang) {
-    //  console.log('code', regexp);
+  for (const word of lang) {
     
-
-    const regexArray = Array.isArray(regexp) ? regexp : [regexp]
+    const regexArray = Array.isArray(word.regexp) ? word.regexp : [word.regexp]
 
     for (const re of regexArray) {
       const result = code.match('^' + re)
       if (!result || !result[0]) continue
 
       const data = result[0]
-
      
-      variants.push({ type, data, len: data.length })
+      variants.push({ ...word, data, len: data.length })
     }
   }
 
@@ -40,5 +42,6 @@ function nextToken(code: string, lang: Language, longest = true): Token | null {
   variants.forEach(v => {
     if (v.data.length > result.data.length) result = v
   })
+  
   return result
 }

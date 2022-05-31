@@ -49,17 +49,22 @@ exports.cool = [
     },
     {
         type: 'STRING',
-        regexp: `"(.|\n)*"`,
+        regexp: `"(.|\(\/\n\))*"`,
         parseFunc(str) {
             str = str.replaceAll('\\b', '\b')
                 .replaceAll('\\t', '\t')
                 .replaceAll('\\n', '\n')
                 .replaceAll('\\f', '\f')
                 .replaceAll('\\', '');
-            if (str.length > 10)
+            if (str.length > 128)
                 return { type: 'ERROR', data: 'String constant is too long' };
             return { type: 'STRING', data: str };
         }
+    },
+    {
+        type: 'ERORR',
+        regexp: `".*\n`,
+        finalData: 'Unterminated string constant'
     },
     {
         type: 'ONE_LINE_COMMENT',
@@ -68,6 +73,16 @@ exports.cool = [
     {
         type: 'MULTI_LINE_COMMENT',
         regexp: '(\\()([\*])+(.|\n)+?([\*])(\\))'
+    },
+    {
+        type: 'ERROR',
+        regexp: '\\*\\)',
+        finalData: 'Unmatched *)'
+    },
+    {
+        type: 'ERROR',
+        regexp: '(\\()([\*])+(.|\n)+?$',
+        finalData: 'EOF in comment'
     },
     {
         type: 'WHITE_SPACE',
@@ -106,121 +121,5 @@ exports.cool = [
     {
         type: 'ERROR',
         regexp: '.'
-    }
+    },
 ];
-// export default {
-//   COMMENT: [
-//                     '//.*\n',
-//                     '(\/)([\*])+(.|\n)+?([\*])(\/)',
-//   ],
-//   KEYWORD: [
-//                     'as',
-//                     'await',
-//                     'break',
-//                     'case',
-//                     'catch',
-//                     'class',
-//                     'const',
-//                     'continue',
-//                     'debugger',
-//                     'default',
-//                     'delete',
-//                     'do',
-//                     'else',
-//                     'enum',
-//                     'export',
-//                     'extends',
-//                     'false',
-//                     'finally',
-//                     'for',
-//                     'function',
-//                     'if',
-//                     'implements',
-//                     'import',
-//                     'in',
-//                     'instanceof',
-//                     'interface',
-//                     'let',
-//                     'new',
-//                     'package',
-//                     'private',
-//                     'protected',
-//                     'public',
-//                     'return',
-//                     'super',
-//                     'switch',
-//                     'static',
-//                     'this',
-//                     'throw',
-//                     'try',
-//                     'true',
-//                     'typeof',
-//                     'var',
-//                     'void',
-//                     'while',
-//                     'with',
-//                     'yield', 	 
-//   ],
-//   ARROW:            '=>',
-//   OPERATOR: [
-//                     '\\.\\.\\.',
-//                     '\\?',
-//                     '>=',
-//                     '<=',
-//                     '>',
-//                     '<',
-//                     '!==',
-//                     '!=',
-//                     '===',
-//                     '==',
-//                     '\\+=',
-//                     '-=',
-//                     '\\*=',
-//                     '/=',
-//                     '%=',
-//                     '\\+',
-//                     '-',
-//                     '\\*\\*',
-//                     '\\*',
-//                     '/',
-//                     '%',
-//                     '\\+\\+',
-//                     '--',
-//                     '!',
-//                     '\\|\\|',
-//                     '&&',
-//                     '>>',
-//                     '<<',
-//                     '^',
-//                     '~',
-//                     '\\|',
-//                     '&',
-//                     '\\^',
-//   ],
-//   ASIGN:            '=',
-//   PERIOD:           '\\.',
-//   COMA:             ',',
-//   COLON:            ':',
-//   SEMICOLON:        ';',
-//   STRING:           `('.*'|)`,
-//   SPECIAL_STRING:   '`.*`',
-//   NUMBER:           '[0-9]+\\.?[0-9]*',
-//   NAN:              'NaN',
-//   INFINITY:         'Infinity',
-//   BOOLEAN:          '(true|false)',
-//   NULL:             'null',
-//   UNDEFINED:        'undefined',
-//   BRACKET_LEFT:     '\\(',
-//   BRACKET_RIGHT:    '\\)',
-//   SQUARE_LEFT:      '\\[',
-//   SQUARE_RIGHT:     '\\]',
-//   CURLY_LEFT:       '{',
-//   CURLY_RIGHT:      '}',
-//   SPACE: [
-//                     ' ',
-//                     '\t',
-//   ],
-//   NEWLINE:          '\n',
-//   PRIVATE_VALUE:    '#[a-z$_A-Z][a-zA-Z$_0-9]*',
-//   VALUE:            '[a-z$_A-Z][a-zA-Z$_0-9]*',
-// }
