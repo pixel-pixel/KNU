@@ -30,6 +30,8 @@ function nextToken(code: string, lang: Language, longest = true) {
 
     for (const re of regexArray) {
       const result = code.match('^' + re)
+      console.log('kek', result);
+      
       if (!result || !result[0]) continue
 
       const data = result[0]
@@ -39,9 +41,9 @@ function nextToken(code: string, lang: Language, longest = true) {
   }
 
   let result = variants[0]
-  variants.forEach(v => {
-    if (v.data.length > result.data.length) result = v
-  })
+  // variants.forEach(v => {
+  //   if (v.data.length > result.data.length) result = v
+  // })
   
   return result
 }

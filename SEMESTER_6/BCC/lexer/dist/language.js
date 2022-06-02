@@ -72,7 +72,7 @@ exports.cool = [
     },
     {
         type: 'MULTI_LINE_COMMENT',
-        regexp: '(\\()([\*])+(.|\n)+?([\*])(\\))'
+        regexp: '(\\()([\*])+(.|\n)*([\*])(\\))'
     },
     {
         type: 'ERROR',
@@ -81,7 +81,7 @@ exports.cool = [
     },
     {
         type: 'ERROR',
-        regexp: '(\\()([\*])+(.|\n)+?$',
+        regexp: '(\\()([\*])+(.|\n)*',
         finalData: 'EOF in comment'
     },
     {

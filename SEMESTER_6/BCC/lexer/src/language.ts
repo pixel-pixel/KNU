@@ -82,7 +82,7 @@ export const cool: Language = [
 
   {
     type: 'MULTI_LINE_COMMENT',
-    regexp: '(\\()([\*])+(.|\n)+?([\*])(\\))'
+    regexp: '(\\()([\*])+(.|\n)*([\*])(\\))'
   },
 
   {
@@ -93,7 +93,7 @@ export const cool: Language = [
 
   {
     type: 'ERROR',
-    regexp: '(\\()([\*])+(.|\n)+?$',
+    regexp: '(\\()([\*])+(.|\n)*',
     finalData: 'EOF in comment'
   },
 
