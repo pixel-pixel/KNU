@@ -54,7 +54,7 @@ export const cool: Language = [
 
   {
     type: 'STRING',
-    regexp: `"(.|\(\/\n\))*"`,
+    regexp: `"(.|\(\/\n\))*?"`,
     parseFunc(str) {      
       str = str.replaceAll('\\b', '\b')
                .replaceAll('\\t', '\t')
