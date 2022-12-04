@@ -9,6 +9,8 @@ const handler = (method: HttpMethod, path: string, ...funcs: ControllerFunc[]) =
     const status = e.status || 500
     const error = e.message || 'Internal server error'
 
+    console.log(`❌ Error (${status}): ${error}`);
+
     res.status(status)
       .json({ error })
   }))

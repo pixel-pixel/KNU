@@ -1,0 +1,9 @@
+MyComponent = {
+  count := 0
+  onclick = { count++ }
+
+  <div onclick>
+    <p>count</p>
+    <p>'text'</p>
+  </div>
+}

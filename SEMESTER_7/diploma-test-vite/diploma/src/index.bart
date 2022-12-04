@@ -1,0 +1,9 @@
+Root = {
+  $count = 0
+
+  Onclick = { $count++ }
+
+  <Div Onclick>
+    <P>$count</P>
+  </Div>
+}

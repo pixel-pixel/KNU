@@ -13,6 +13,10 @@ const userSchema = new Schema({
   role: {
     type: String,
     requre: true,
+  },
+  cartId: {
+    type: String,
+    requre: true,
   }
 })
 
