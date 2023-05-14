@@ -1,8 +1,9 @@
 import { P } from "../components/common"
-import { FC } from "./types"
+import { Reactive } from "./reactive"
+import { StdAdditionalFC, StdFC } from "./types"
 
 const createStdComponent = 
-  <T extends keyof HTMLElementTagNameMap>(tag: T, fc?: FC<HTMLElementTagNameMap[T]>): FC<HTMLElementTagNameMap[T]> => {
+  <T extends keyof HTMLElementTagNameMap>(tag: T, fc?: StdAdditionalFC<HTMLElementTagNameMap[T]>): StdFC<HTMLElementTagNameMap[T]> => {
   return (options, ...childs) => {
     const res = document.createElement(tag)
 
@@ -15,7 +16,7 @@ const createStdComponent =
 
     for (const key in options) {
       // @ts-ignore: Unreachable code error
-      if (typeof options[key] === 'object' && 'subscribe' in options[key]) {
+      if (options[key] instanceof Reactive) {
         // @ts-ignore: Unreachable code error
         options[key].subscribe(() => res[key] = options[key].value)
       } else {
@@ -24,7 +25,7 @@ const createStdComponent =
       }
     }
 
-    fc && fc(options, ...childs)
+    fc && fc(res, options, ...childs)
 
     return res
   }

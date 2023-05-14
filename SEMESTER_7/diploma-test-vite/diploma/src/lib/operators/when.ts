@@ -10,17 +10,18 @@ export const when = <T>(
   let prevFNsIndex: number
   const nodes: Node[] = []
 
-  let father: Node
-  let fatherIndex = 0
+  let parrentNode: Node
+  let parrentIndex = 0
 
   value.subscribe(async () => {
-    await true;
-    if (!father) {
-      father = temp.parentNode!
-      father.childNodes.forEach((n, i) => n === temp && (fatherIndex = i))
-      console.log({ fatherIndex });
+    await true
+    if (!parrentNode) {
+      parrentNode = temp.parentNode!
+      parrentNode.childNodes.forEach((n, i) => {
+        if (n === temp) parrentIndex = i
+      })
       
-      father.removeChild(temp)
+      parrentNode.removeChild(temp)
     }
 
     const index = fNs.findIndex(([v]) => v === value.value)
@@ -28,13 +29,13 @@ export const when = <T>(
     if (index === prevFNsIndex) return
     prevFNsIndex = index
 
-    nodes.forEach(n => father.contains(n) && father.removeChild(n))
+    nodes.forEach(n => parrentNode.contains(n) && parrentNode.removeChild(n))
 
     if (!nodes[index]) nodes[index] = fNs[index][1]()
 
     const node = nodes[index]
-    if (fatherIndex > father.childNodes.length) father.appendChild(node)
-    else father.insertBefore(node, father.childNodes[fatherIndex])
+    if (parrentIndex > parrentNode.childNodes.length) parrentNode.appendChild(node)
+    else parrentNode.insertBefore(node, parrentNode.childNodes[parrentIndex])
   })
 
   return temp

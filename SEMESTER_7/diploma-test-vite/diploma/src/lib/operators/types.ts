@@ -1,2 +1,2 @@
-export type IfFunc<T> = (variable: T) => boolean
+export type IfFunc<T> = (variable: T) => any
 export type Late<T> = () => T
