@@ -1,0 +1,77 @@
+footer {
+    display: flex;
+    justify-content: space-around;
+    background-color: rgba(37, 36, 34, 0.8);
+    margin-top: 20px;
+    font-family: 'Cairo', sans-serif;
+    padding: 10px 0px;
+}
+
+footer span {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+footer .fonte-api a{
+    display: flex;
+    text-decoration: none;
+    margin-top: 5px;
+    border: solid 2px transparent;
+    border-radius: 10px;
+    padding: 5px;
+    color: #FFF;
+}
+
+footer .fonte-api a svg {
+    margin-right: 5px;
+    font-size: 20px;
+}
+
+footer .fonte-api a:hover {
+    color: #ffd23f;
+    border-color: #ffd23f;
+    transition: 0.5s;
+}
+
+footer .criador {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+footer .criador span {
+    margin-bottom: 0px;
+}
+
+footer .criador img {
+    width: 80px;
+    border-radius: 50%;
+}
+
+footer .redes-sociais {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+}
+footer .redes-sociais a {
+    text-decoration: none;
+    color: #FFF;
+    border: solid 2px rgba(0, 0, 0, 0.0);
+    border-radius: 10px;
+    padding: 8px;
+    margin-right: 20px;
+}
+
+footer .redes-sociais a:hover {
+    color: #ffd23f;
+    border-color:#ffd23f;
+    transition: 0.8s;
+}
+
+footer .redes-sociais a svg {
+    font-size: 20px;
+    margin-bottom: -5px;
+}
