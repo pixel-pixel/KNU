@@ -1,2 +1,2 @@
 # KNU
-University stuff
+University staff
